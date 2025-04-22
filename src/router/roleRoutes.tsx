@@ -8,6 +8,11 @@ import Analytic from "../pages/admin/Analytic";
 import Project from "../pages/student/Project";
 import Application from "../pages/student/Application";
 import { UserRole } from "../types/enum";
+import FacultyDashboard from "../pages/faculty/Dashboard";
+import ProjectForm from "../pages/faculty/ProjectForm";
+import ApplicationsReview from "../pages/faculty/ApplicationReview";
+import ApplicationDetail from "../pages/faculty/ApplicationDetail";
+import GroupDetail from "../pages/faculty/GroupDetail";
 
 const adminRoutes = [
     {
@@ -54,13 +59,61 @@ const adminRoutes = [
 
 const facultyRoutes = [
     {
-        path: "projects/manage",
+        path: "faculty",
         element: (
             <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
-                <div>Manage Projects</div>
+                <FacultyDashboard />
             </RoleBasedRoute>
         )
-    }
+    },
+    {
+        path: "faculty/dashboard",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <FacultyDashboard />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "faculty/project/create",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <ProjectForm />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "faculty/project/edit/:projectId",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <ProjectForm />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "faculty/applications",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <ApplicationsReview />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "faculty/applications/:applicationId",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <ApplicationDetail />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "faculty/groups/:groupId",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <GroupDetail />
+            </RoleBasedRoute>
+        )
+    },
 ] as const;
 
 const studentRoutes = [

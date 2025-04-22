@@ -43,7 +43,7 @@ export function useAuth() {
     });
 
     const googleLogin = () => {
-        window.location.href = 'http://localhost:5000/auth/google';
+        window.location.href = 'http://localhost:8000/auth/google';
     };
  
     const handleAuthCallback = async (token: string) => {
