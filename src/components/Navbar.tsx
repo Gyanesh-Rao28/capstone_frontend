@@ -45,16 +45,17 @@ const Navbar: React.FC = () => {
             { to: "/", text: "Home", icon: Home }
         ],
         admin: [
-            {
-                text: "Manage Users",
-                icon: Users,
-                dropdown: [
-                    { to: "/manage/students", text: "Students" },
-                    { to: "/manage/faculty", text: "Faculty" },
-                    { to: "/manage/admin", text: "Admins" },
-                    { to: "/manage/user", text: "Users" }
-                ]
-            },
+            // {
+            //     text: "Manage Users",
+            //     icon: Users,
+            //     dropdown: [
+            //         { to: "/manage/students", text: "Students" },
+            //         { to: "/manage/faculty", text: "Faculty" },
+            //         { to: "/manage/admin", text: "Admins" },
+            //         { to: "/manage/user", text: "Users" }
+            //     ]
+            // },
+            { to: "/manage/user", text: "Manage Users", icon: Users },
             { to: "/analytics", text: "Analytics", icon: BarChart2 }
         ],
         faculty: [

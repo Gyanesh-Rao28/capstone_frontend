@@ -1,8 +1,8 @@
 // src/router/roleRoutes.tsx
 import { RoleBasedRoute } from "../providers/RoleBasedProvider";
-import ManageStudent from "../pages/admin/ManageStudent";
-import ManageFaculty from "../pages/admin/ManageFaculty";
-import ManageAdmin from "../pages/admin/ManageAdmin";
+// import ManageStudent from "../pages/admin/ManageStudent";
+// import ManageFaculty from "../pages/admin/ManageFaculty";
+// import ManageAdmin from "../pages/admin/ManageAdmin";
 import ManageUser from "../pages/admin/ManageUser";
 import Analytic from "../pages/admin/Analytic";
 import Project from "../pages/student/Project";
@@ -17,30 +17,30 @@ import ProjectById from "../pages/student/ProjectById";
 import ApplicationById from "../pages/student/ApplicationById";
 
 const adminRoutes = [
-    {
-        path: "manage/students",
-        element: (
-            <RoleBasedRoute allowedRoles={[UserRole.admin]}>
-                <ManageStudent />
-            </RoleBasedRoute>
-        )
-    },
-    {
-        path: "manage/faculty",
-        element: (
-            <RoleBasedRoute allowedRoles={[UserRole.admin]}>
-                <ManageFaculty />
-            </RoleBasedRoute>
-        )
-    },
-    {
-        path: "manage/admin",
-        element: (
-            <RoleBasedRoute allowedRoles={[UserRole.admin]}>
-                <ManageAdmin />
-            </RoleBasedRoute>
-        )
-    },
+    // {
+    //     path: "manage/students",
+    //     element: (
+    //         <RoleBasedRoute allowedRoles={[UserRole.admin]}>
+    //             <ManageStudent />
+    //         </RoleBasedRoute>
+    //     )
+    // },
+    // {
+    //     path: "manage/faculty",
+    //     element: (
+    //         <RoleBasedRoute allowedRoles={[UserRole.admin]}>
+    //             <ManageFaculty />
+    //         </RoleBasedRoute>
+    //     )
+    // },
+    // {
+    //     path: "manage/admin",
+    //     element: (
+    //         <RoleBasedRoute allowedRoles={[UserRole.admin]}>
+    //             <ManageAdmin />
+    //         </RoleBasedRoute>
+    //     )
+    // },
     {
         path: "manage/user",
         element: (
