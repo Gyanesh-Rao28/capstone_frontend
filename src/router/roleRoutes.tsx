@@ -13,6 +13,8 @@ import ProjectForm from "../pages/faculty/ProjectForm";
 import ApplicationsReview from "../pages/faculty/ApplicationReview";
 import ApplicationDetail from "../pages/faculty/ApplicationDetail";
 import GroupDetail from "../pages/faculty/GroupDetail";
+import ProjectById from "../pages/student/ProjectById";
+import ApplicationById from "../pages/student/ApplicationById";
 
 const adminRoutes = [
     {
@@ -126,10 +128,26 @@ const studentRoutes = [
         )
     },
     {
+        path: "project/:projectId",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.student]}>
+                <ProjectById />
+            </RoleBasedRoute>
+        )
+    },
+    {
         path: "applications",
         element: (
             <RoleBasedRoute allowedRoles={[UserRole.student]}>
                 <Application />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "application/:id",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.student]}>
+                <ApplicationById />
             </RoleBasedRoute>
         )
     }

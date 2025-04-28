@@ -58,16 +58,18 @@ const Navbar: React.FC = () => {
             { to: "/analytics", text: "Analytics", icon: BarChart2 }
         ],
         faculty: [
-            {
-                text: "Manage Projects",
-                icon: FolderGit2,
-                dropdown: [
-                    { to: "/projects/idp", text: "IDP" },
-                    { to: "/projects/capstone", text: "Capstone" },
-                    { to: "/projects/urop", text: "UROP" }
-                ]
-            },
-            { to: "/applications", text: "Applications", icon: FileSpreadsheet }
+            // {
+            //     text: "Manage Projects",
+            //     icon: FolderGit2,
+            //     dropdown: [
+            //         { to: "/projects/idp", text: "IDP" },
+            //         { to: "/projects/capstone", text: "Capstone" },
+            //         { to: "/projects/urop", text: "UROP" }
+            //     ]
+            // },
+            { to: "/faculty/applications", text: "Applications", icon: FileSpreadsheet }
+            ,
+            { to: "/faculty/project/create", text: "Manage Projects", icon: FolderGit2 }
         ],
         student: [
             { to: "/projects", text: "Projects", icon: FolderGit2 },
@@ -109,7 +111,7 @@ const Navbar: React.FC = () => {
                     {/* Logo */}
                     <div className="flex items-center">
                         <Link to="/" className="text-xl font-bold text-gray-900">
-                            CapStone
+                            Project Management Portal
                         </Link>
                     </div>
 
