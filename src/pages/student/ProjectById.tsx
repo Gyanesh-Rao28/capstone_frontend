@@ -245,7 +245,7 @@ const ProjectById = () => {
 
             await createGroup(projectId, groupName);
             setIsCreateGroupModalOpen(false);
-            navigate(`/create-group/${projectId}`);
+            navigate(`/applications`);
         } catch (err: any) {
             console.error('Error creating group:', err);
             setFormError(err.response?.data?.message || "Failed to create group. Please try again.");

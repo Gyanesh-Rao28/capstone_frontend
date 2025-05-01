@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, ArrowRight, UserPlus, Mail, Shield, OctagonAlert , PlusCircle, CircleX } from 'lucide-react'
+import { BookOpen, ArrowRight, UserPlus, Mail, Shield, OctagonAlert, PlusCircle, CircleX } from 'lucide-react'
 import { getAllApplications } from '../../services/studentApi';
 import Loading from '../../components/Loading';
 import JoinTeamModal from '../../components/studentsComponents/JoinTeamModal';
@@ -95,16 +95,18 @@ const Application = () => {
 
   if (error) {
     return (
-      <div className="w-full max-w-7xl mx-auto p-4">
-        <div className="bg-red-50 p-4 rounded-lg shadow-sm">
-          <p className="text-red-800">Error: {error}</p>
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="max-w-7xl mx-auto p-4">
+          <div className="bg-red-50 p-4 rounded-lg shadow-sm">
+            <p className="text-red-800">Error: {error}</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 overflow-y-auto">
+    <div className="w-full bg-gray-50 overflow-y-auto">
       {/* Header Section */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
@@ -146,7 +148,7 @@ const Application = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
               <div className="bg-white rounded-lg shadow-md p-4 flex items-start space-x-4">
                 <div className="bg-yellow-100 rounded-lg p-3">
-                    <OctagonAlert  className="h-6 w-6 text-yellow-600" />
+                  <OctagonAlert className="h-6 w-6 text-yellow-600" />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500">Pending Applications</h3>
@@ -155,8 +157,6 @@ const Application = () => {
                   </p>
                 </div>
               </div>
-
-                
 
               <div className="bg-white rounded-lg shadow-md p-4 flex items-start space-x-4">
                 <div className="bg-green-100 rounded-lg p-3">
@@ -170,17 +170,17 @@ const Application = () => {
                 </div>
               </div>
 
-                <div className="bg-white rounded-lg shadow-md p-4 flex items-start space-x-4">
-                  <div className="bg-rose-100 rounded-lg p-3">
-                    <CircleX className="h-6 w-6 text-rose-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500">Rejected Applications</h3>
-                    <p className="mt-1 text-lg font-semibold text-gray-900">
-                      {applications.filter(app => app.applicationStatus === 'Rejected').length}
-                    </p>
-                  </div>
+              <div className="bg-white rounded-lg shadow-md p-4 flex items-start space-x-4">
+                <div className="bg-rose-100 rounded-lg p-3">
+                  <CircleX className="h-6 w-6 text-rose-600" />
                 </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500">Rejected Applications</h3>
+                  <p className="mt-1 text-lg font-semibold text-gray-900">
+                    {applications.filter(app => app.applicationStatus === 'Rejected').length}
+                  </p>
+                </div>
+              </div>
 
               <div className="bg-white rounded-lg shadow-md p-4 flex items-start space-x-4">
                 <div className="bg-blue-100 rounded-lg p-3">
@@ -266,4 +266,4 @@ const Application = () => {
   );
 };
 
-export default Application;
+export default Application; 

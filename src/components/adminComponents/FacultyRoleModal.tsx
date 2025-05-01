@@ -1,5 +1,5 @@
-import { useState, FormEvent } from 'react';
-import { X, Briefcase, GraduationCap, ShieldCheck, AlertCircle } from 'lucide-react';
+import { useState, FormEvent, useEffect } from 'react';
+import { X, Briefcase, GraduationCap, ShieldCheck, AlertCircle, Check } from 'lucide-react';
 import { User } from '../../types/user';
 import { assignFacultyRole, assignStudentRole, assignAdminRole } from '../../services/adminApi';
 
@@ -11,10 +11,19 @@ interface RoleModalProps {
 }
 
 export const FacultyRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModalProps) => {
-    const [department, setDepartment] = useState(user?.faculty?.department || '');
-    const [designation, setDesignation] = useState(user?.faculty?.designation || '');
+    const [department, setDepartment] = useState('');
+    const [designation, setDesignation] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // Reset form when modal opens with a different user
+    useEffect(() => {
+        if (isOpen && user) {
+            setDepartment(user.faculty?.department || '');
+            setDesignation(user.faculty?.designation || '');
+            setError(null);
+        }
+    }, [isOpen, user]);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -33,7 +42,7 @@ export const FacultyRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModal
         }
     };
 
-    if (!isOpen) return null;
+    if (!isOpen || !user) return null;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -41,7 +50,7 @@ export const FacultyRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModal
                 <div className="flex justify-between items-center border-b border-gray-200 p-4">
                     <h3 className="text-lg font-medium text-gray-900 flex items-center">
                         <Briefcase className="h-5 w-5 text-blue-600 mr-2" />
-                        Assign Faculty Role
+                        Assign Faculty Role to {user.name}
                     </h3>
                     <button
                         onClick={onClose}
@@ -100,11 +109,21 @@ export const FacultyRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModal
                         </button>
                         <button
                             type="submit"
-                            disabled={isSubmitting}
-                            className={`px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-                                }`}
+                            disabled={isSubmitting || !department || !designation}
+                            className={`px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center
+                ${(isSubmitting || !department || !designation) ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
-                            {isSubmitting ? 'Assigning...' : 'Assign Faculty Role'}
+                            {isSubmitting ? (
+                                <>
+                                    <span className="animate-spin h-4 w-4 mr-2 border-b-2 border-white rounded-full"></span>
+                                    Assigning...
+                                </>
+                            ) : (
+                                <>
+                                    <Check className="h-4 w-4 mr-2" />
+                                    Assign Faculty Role
+                                </>
+                            )}
                         </button>
                     </div>
                 </form>
@@ -114,10 +133,19 @@ export const FacultyRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModal
 };
 
 export const StudentRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModalProps) => {
-    const [studentId, setStudentId] = useState(user?.student?.studentId || '');
-    const [batch, setBatch] = useState(user?.student?.batch || '');
+    const [studentId, setStudentId] = useState('');
+    const [batch, setBatch] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // Reset form when modal opens with a different user
+    useEffect(() => {
+        if (isOpen && user) {
+            setStudentId(user.student?.studentId || '');
+            setBatch(user.student?.batch || '');
+            setError(null);
+        }
+    }, [isOpen, user]);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -136,15 +164,15 @@ export const StudentRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModal
         }
     };
 
-    if (!isOpen) return null;
+    if (!isOpen || !user) return null;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
                 <div className="flex justify-between items-center border-b border-gray-200 p-4">
                     <h3 className="text-lg font-medium text-gray-900 flex items-center">
-                        <GraduationCap className="h-5 w-5 text-blue-600 mr-2" />
-                        Assign Student Role
+                        <GraduationCap className="h-5 w-5 text-green-600 mr-2" />
+                        Assign Student Role to {user.name}
                     </h3>
                     <button
                         onClick={onClose}
@@ -203,11 +231,21 @@ export const StudentRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModal
                         </button>
                         <button
                             type="submit"
-                            disabled={isSubmitting}
-                            className={`px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-                                }`}
+                            disabled={isSubmitting || !studentId || !batch}
+                            className={`px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center
+                ${(isSubmitting || !studentId || !batch) ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
-                            {isSubmitting ? 'Assigning...' : 'Assign Student Role'}
+                            {isSubmitting ? (
+                                <>
+                                    <span className="animate-spin h-4 w-4 mr-2 border-b-2 border-white rounded-full"></span>
+                                    Assigning...
+                                </>
+                            ) : (
+                                <>
+                                    <Check className="h-4 w-4 mr-2" />
+                                    Assign Student Role
+                                </>
+                            )}
                         </button>
                     </div>
                 </form>
@@ -219,6 +257,13 @@ export const StudentRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModal
 export const AdminRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModalProps) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // Reset form when modal opens with a different user
+    useEffect(() => {
+        if (isOpen) {
+            setError(null);
+        }
+    }, [isOpen]);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -237,15 +282,15 @@ export const AdminRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModalPr
         }
     };
 
-    if (!isOpen) return null;
+    if (!isOpen || !user) return null;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
                 <div className="flex justify-between items-center border-b border-gray-200 p-4">
                     <h3 className="text-lg font-medium text-gray-900 flex items-center">
-                        <ShieldCheck className="h-5 w-5 text-blue-600 mr-2" />
-                        Assign Admin Role
+                        <ShieldCheck className="h-5 w-5 text-red-600 mr-2" />
+                        Assign Admin Role to {user.name}
                     </h3>
                     <button
                         onClick={onClose}
@@ -272,7 +317,7 @@ export const AdminRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModalPr
                                 <h3 className="text-sm font-medium text-yellow-800">Warning</h3>
                                 <div className="mt-2 text-sm text-yellow-700">
                                     <p>
-                                        You are about to assign admin privileges to {user?.name}. Admins have full access to manage users and system settings.
+                                        You are about to assign admin privileges to <strong>{user.name}</strong>. Admins have full access to manage users and system settings.
                                     </p>
                                 </div>
                             </div>
@@ -291,10 +336,20 @@ export const AdminRoleModal = ({ isOpen, onClose, onSuccess, user }: RoleModalPr
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-                                }`}
+                            className={`px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center
+                ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
-                            {isSubmitting ? 'Assigning...' : 'Assign Admin Role'}
+                            {isSubmitting ? (
+                                <>
+                                    <span className="animate-spin h-4 w-4 mr-2 border-b-2 border-white rounded-full"></span>
+                                    Assigning...
+                                </>
+                            ) : (
+                                <>
+                                    <Check className="h-4 w-4 mr-2" />
+                                    Assign Admin Role
+                                </>
+                            )}
                         </button>
                     </div>
                 </form>

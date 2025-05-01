@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Users, AlertCircle } from 'lucide-react';
+import { Users, AlertCircle, Briefcase, GraduationCap, ShieldCheck } from 'lucide-react';
 import { getAllUsers } from '../../services/adminApi';
-import { User } from '../../types/user';
+import { User, UserRole } from '../../types/user';
 import Loading from '../../components/Loading';
 import UserSearchFilter from '../../components/adminComponents/UserSearchFilter';
 import UserTable from '../../components/adminComponents/UserTable';
-import { AdminRoleModal, FacultyRoleModal, StudentRoleModal } from '../../components/adminComponents/FacultyRoleModal';
+import RoleAssignmentModal from '../../components/adminComponents/RoleAssignmentModal';
 
 const ManageUser = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -15,10 +15,21 @@ const ManageUser = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // State for role assignment modals
-  const [isFacultyModalOpen, setIsFacultyModalOpen] = useState(false);
-  const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(10);
+
+  // Role counts for summary
+  const [roleCounts, setRoleCounts] = useState({
+    total: 0,
+    admin: 0,
+    faculty: 0,
+    student: 0,
+    user: 0
+  });
+
+  // State for role assignment modal
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -28,6 +39,16 @@ const ManageUser = () => {
   useEffect(() => {
     filterUsers();
   }, [users, searchTerm, selectedRole]);
+
+  useEffect(() => {
+    // Reset to first page when filters change
+    setCurrentPage(1);
+  }, [searchTerm, selectedRole]);
+
+  useEffect(() => {
+    // Calculate role counts whenever users change
+    calculateRoleCounts();
+  }, [users]);
 
   const fetchUsers = async () => {
     try {
@@ -41,6 +62,35 @@ const ManageUser = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const calculateRoleCounts = () => {
+    const counts = {
+      total: users.length,
+      admin: 0,
+      faculty: 0,
+      student: 0,
+      user: 0
+    };
+
+    users.forEach(user => {
+      switch (user.role) {
+        case UserRole.admin:
+          counts.admin++;
+          break;
+        case UserRole.faculty:
+          counts.faculty++;
+          break;
+        case UserRole.student:
+          counts.student++;
+          break;
+        case UserRole.user:
+          counts.user++;
+          break;
+      }
+    });
+
+    setRoleCounts(counts);
   };
 
   const filterUsers = () => {
@@ -64,19 +114,19 @@ const ManageUser = () => {
     setFilteredUsers(result);
   };
 
-  const handleOpenFacultyModal = (user: User) => {
-    setSelectedUser(user);
-    setIsFacultyModalOpen(true);
+  // Calculate pagination
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   };
 
-  const handleOpenStudentModal = (user: User) => {
+  const handleOpenRoleModal = (user: User) => {
     setSelectedUser(user);
-    setIsStudentModalOpen(true);
-  };
-
-  const handleOpenAdminModal = (user: User) => {
-    setSelectedUser(user);
-    setIsAdminModalOpen(true);
+    setIsRoleModalOpen(true);
   };
 
   const handleRoleUpdateSuccess = () => {
@@ -91,6 +141,49 @@ const ManageUser = () => {
           Manage Users
         </h1>
         <p className="text-gray-600 mt-1">View and manage user roles and permissions</p>
+      </div>
+
+      {/* Role Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white rounded-lg shadow-sm p-4 flex items-center space-x-4">
+          <div className="bg-purple-100 p-3 rounded-lg">
+            <Users className="h-6 w-6 text-purple-600" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Total Users</p>
+            <p className="text-xl font-semibold">{roleCounts.total}</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm p-4 flex items-center space-x-4">
+          <div className="bg-red-100 p-3 rounded-lg">
+            <ShieldCheck className="h-6 w-6 text-red-600" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Admins</p>
+            <p className="text-xl font-semibold">{roleCounts.admin}</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm p-4 flex items-center space-x-4">
+          <div className="bg-blue-100 p-3 rounded-lg">
+            <Briefcase className="h-6 w-6 text-blue-600" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Faculty</p>
+            <p className="text-xl font-semibold">{roleCounts.faculty}</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm p-4 flex items-center space-x-4">
+          <div className="bg-green-100 p-3 rounded-lg">
+            <GraduationCap className="h-6 w-6 text-green-600" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Students</p>
+            <p className="text-xl font-semibold">{roleCounts.student}</p>
+          </div>
+        </div>
       </div>
 
       {/* Search and Filter */}
@@ -118,7 +211,7 @@ const ManageUser = () => {
         <>
           <div className="mb-4 flex justify-between items-center">
             <p className="text-sm text-gray-500">
-              Showing {filteredUsers.length} of {users.length} users
+              {filteredUsers.length} users found
               {searchTerm && <span> matching "{searchTerm}"</span>}
               {selectedRole && <span> with role "{selectedRole}"</span>}
             </p>
@@ -131,32 +224,20 @@ const ManageUser = () => {
           </div>
 
           <UserTable
-            users={filteredUsers}
-            onAssignFaculty={handleOpenFacultyModal}
-            onAssignStudent={handleOpenStudentModal}
-            onAssignAdmin={handleOpenAdminModal}
+            users={currentUsers}
+            onAssignRole={handleOpenRoleModal}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            usersPerPage={usersPerPage}
           />
         </>
       )}
 
-      {/* Role Assignment Modals */}
-      <FacultyRoleModal
-        isOpen={isFacultyModalOpen}
-        onClose={() => setIsFacultyModalOpen(false)}
-        onSuccess={handleRoleUpdateSuccess}
-        user={selectedUser}
-      />
-
-      <StudentRoleModal
-        isOpen={isStudentModalOpen}
-        onClose={() => setIsStudentModalOpen(false)}
-        onSuccess={handleRoleUpdateSuccess}
-        user={selectedUser}
-      />
-
-      <AdminRoleModal
-        isOpen={isAdminModalOpen}
-        onClose={() => setIsAdminModalOpen(false)}
+      {/* Unified Role Assignment Modal */}
+      <RoleAssignmentModal
+        isOpen={isRoleModalOpen}
+        onClose={() => setIsRoleModalOpen(false)}
         onSuccess={handleRoleUpdateSuccess}
         user={selectedUser}
       />
