@@ -55,3 +55,45 @@ export const getGroupById = async (groupId: string) => {
   const response = await apiClient.get(`/api/faculty/groups/${groupId}`);
   return response.data;
 };
+
+// === Assessment APIs ===
+
+// Create a new assessment
+export const createAssessment = async (assessmentData: {
+  groupId: string;
+  title: string;
+  description: string;
+  deadline: string | Date;
+  startTime: string | Date;
+  endTime: string | Date;
+}) => {
+  const response = await apiClient.post('/api/faculty/assessments', assessmentData);
+  return response.data;
+};
+
+// Get all assessments for a faculty
+export const getAssessmentsByFaculty = async () => {
+  const response = await apiClient.get('/api/faculty/assessments');
+  return response.data;
+};
+
+// Get a specific assessment by ID
+export const getAssessmentById = async (assessmentId: string) => {
+  const response = await apiClient.get(`/api/faculty/assessments/${assessmentId}`);
+  return response.data;
+};
+
+// Grade a submission
+export const gradeSubmission = async (submissionId: string, grade: number) => {
+  const response = await apiClient.post('/api/faculty/submissions/grade', {
+    submissionId,
+    grade
+  });
+  return response.data;
+};
+
+// Get all submissions for an assessment
+export const getSubmissionsByAssessment = async (assessmentId: string) => {
+  const response = await apiClient.get(`/api/faculty/assessments/${assessmentId}/submissions`);
+  return response.data;
+};

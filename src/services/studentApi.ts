@@ -64,3 +64,67 @@ export const leaveGroup = async (groupId: string) => {
     const response = await apiClient.delete(`/api/student/leaveGroup?groupId=${groupId}`);
     return response.data;
 };
+
+// === Assessment APIs ===
+
+// Get all assessments for student's groups
+export const getStudentAssessments = async () => {
+    const response = await apiClient.get('/api/student/assessments');
+    return response.data;
+};
+
+// Get assessment by ID
+export const getAssessmentById = async (assessmentId: string) => {
+    const response = await apiClient.get(`/api/student/assessments/${assessmentId}`);
+    return response.data;
+};
+
+// Submit an assessment
+export const submitAssessment = async (submissionData: {
+    assessmentId: string;
+    content: string;
+    attachments: string[];
+}) => {
+    const response = await apiClient.post('/api/student/submissions', submissionData);
+    return response.data;
+};
+
+// Get all submissions by student
+export const getSubmissionsByStudent = async () => {
+    const response = await apiClient.get('/api/student/submissions');
+    return response.data;
+};
+
+// Upload attachment for submission
+export const uploadSubmissionAttachment = async (file: File, projectId: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await apiClient.post(
+        `/api/student/submissions/upload?projectId=${projectId}`, 
+        formData, 
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+    );
+    return response.data;
+};
+
+// Upload project report
+export const uploadProjectReport = async (file: File, projectId: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await apiClient.post(
+        `/api/student/submissions/report?projectId=${projectId}`, 
+        formData, 
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+    );
+    return response.data;
+};

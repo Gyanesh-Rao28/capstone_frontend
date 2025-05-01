@@ -15,6 +15,11 @@ import ApplicationDetail from "../pages/faculty/ApplicationDetail";
 import GroupDetail from "../pages/faculty/GroupDetail";
 import ProjectById from "../pages/student/ProjectById";
 import ApplicationById from "../pages/student/ApplicationById";
+import Assessments from "../pages/faculty/Assessments";
+import AssessmentForm from "../pages/faculty/AssessmentForm";
+import AssessmentDetail from "../pages/faculty/AssessmentDetail";
+import StudentAssessments from "../pages/student/Assessments";
+import StudentAssessmentDetail from "../pages/student/AssessmentDetail";
 
 const adminRoutes = [
     // {
@@ -116,6 +121,30 @@ const facultyRoutes = [
             </RoleBasedRoute>
         )
     },
+    {
+        path: "faculty/assessments",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <Assessments />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "faculty/assessments/create",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <AssessmentForm />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "faculty/assessments/:assessmentId",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
+                <AssessmentDetail />
+            </RoleBasedRoute>
+        )
+    },
 ] as const;
 
 const studentRoutes = [
@@ -148,6 +177,22 @@ const studentRoutes = [
         element: (
             <RoleBasedRoute allowedRoles={[UserRole.student]}>
                 <ApplicationById />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "assessments",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.student]}>
+                <StudentAssessments />
+            </RoleBasedRoute>
+        )
+    },
+    {
+        path: "assessment/:assessmentId",
+        element: (
+            <RoleBasedRoute allowedRoles={[UserRole.student]}>
+                <StudentAssessmentDetail />
             </RoleBasedRoute>
         )
     }
