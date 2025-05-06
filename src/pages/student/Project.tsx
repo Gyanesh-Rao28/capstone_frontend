@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Search, Filter, X, BookOpen , Calendar, Server } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getAllProjects } from '../../services/studentApi';
-import Loading from '../../components/Loading'; // Import your loading component
+import Loading from '../../components/Loading';
 
 export enum ProjectDomain {
   AIML = 'AIML',

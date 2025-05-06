@@ -66,15 +66,7 @@ const adminRoutes = [
 
 const facultyRoutes = [
     {
-        path: "faculty",
-        element: (
-            <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
-                <FacultyDashboard />
-            </RoleBasedRoute>
-        )
-    },
-    {
-        path: "faculty/dashboard",
+        path: "faculty/projects",
         element: (
             <RoleBasedRoute allowedRoles={[UserRole.faculty]}>
                 <FacultyDashboard />

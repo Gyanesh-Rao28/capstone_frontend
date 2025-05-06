@@ -121,9 +121,9 @@ const Dashboard = () => {
                                     <IdCard className="h-6 w-6 text-indigo-600" />
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500">Student ID</h3>
-                                    <p className="mt-1 text-sm text-gray-900 truncate" title={user?.student?.studentId}>
-                                        {user?.student?.studentId}
+                                    <h3 className="text-sm font-medium text-gray-500">Roll Number</h3>
+                                    <p className="mt-1 text-sm text-gray-900 truncate" title={user?.student?.rollNumber}>
+                                        {user?.student?.rollNumber}
                                     </p>
                                 </div>
                             </div>}

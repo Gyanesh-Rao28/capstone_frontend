@@ -14,7 +14,7 @@ const RoleAssignmentModal = ({ isOpen, onClose, onSuccess, user }: RoleAssignmen
     const [selectedRole, setSelectedRole] = useState<UserRole | ''>('');
     const [department, setDepartment] = useState('');
     const [designation, setDesignation] = useState('');
-    const [studentId, setStudentId] = useState('');
+    const [rollNumber, setrollNumber] = useState('');
     const [batch, setBatch] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ const RoleAssignmentModal = ({ isOpen, onClose, onSuccess, user }: RoleAssignmen
             setSelectedRole('');
             setDepartment('');
             setDesignation('');
-            setStudentId('');
+            setrollNumber('');
             setBatch('');
             setError(null);
         }
@@ -44,7 +44,7 @@ const RoleAssignmentModal = ({ isOpen, onClose, onSuccess, user }: RoleAssignmen
                     await assignFacultyRole(user.id, department, designation);
                     break;
                 case UserRole.student:
-                    await assignStudentRole(user.id, studentId, batch);
+                    await assignStudentRole(user.id, rollNumber, batch);
                     break;
                 case UserRole.admin:
                     await assignAdminRole(user.id);
@@ -68,7 +68,7 @@ const RoleAssignmentModal = ({ isOpen, onClose, onSuccess, user }: RoleAssignmen
             case UserRole.faculty:
                 return department.trim() !== '' && designation.trim() !== '';
             case UserRole.student:
-                return studentId.trim() !== '' && batch.trim() !== '';
+                return rollNumber.trim() !== '' && batch.trim() !== '';
             case UserRole.admin:
                 return true;
             default:
@@ -76,19 +76,6 @@ const RoleAssignmentModal = ({ isOpen, onClose, onSuccess, user }: RoleAssignmen
         }
     };
 
-    // Get role icon component
-    // const getRoleIcon = (role: UserRole) => {
-    //     switch (role) {
-    //         case UserRole.admin:
-    //             return <ShieldCheck className="h-5 w-5 text-red-600" />;
-    //         case UserRole.faculty:
-    //             return <Briefcase className="h-5 w-5 text-blue-600" />;
-    //         case UserRole.student:
-    //             return <GraduationCap className="h-5 w-5 text-green-600" />;
-    //         default:
-    //             return null;
-    //     }
-    // };
 
     // Get role button colors
     const getRoleButtonClass = (role: UserRole) => {
@@ -199,16 +186,16 @@ const RoleAssignmentModal = ({ isOpen, onClose, onSuccess, user }: RoleAssignmen
                     {selectedRole === UserRole.student && (
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="studentId" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Student ID
+                                <label htmlFor="rollNumber" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Roll Number
                                 </label>
                                 <input
                                     type="text"
-                                    id="studentId"
-                                    value={studentId}
-                                    onChange={(e) => setStudentId(e.target.value)}
+                                    id="rollNumber"
+                                    value={rollNumber}
+                                    onChange={(e) => setrollNumber(e.target.value)}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="e.g., AP21110010239"
+                                    placeholder="e.g., APxxxxxxxxxx"
                                     required
                                 />
                             </div>

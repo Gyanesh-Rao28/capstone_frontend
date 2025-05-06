@@ -13,8 +13,8 @@ export const assignFacultyRole = async (userId: string, department: string, desi
 };
 
 // Assign student role
-export const assignStudentRole = async (userId: string, studentId: string, batch: string) => {
-    const response = await apiClient.post(`/api/admin/assignStudentRole?userId=${userId}&studentId=${studentId}&batch=${batch}`);
+export const assignStudentRole = async (userId: string, rollNumber: string, batch: string) => {
+    const response = await apiClient.post(`/api/admin/assignStudentRole?userId=${userId}&rollNumber=${rollNumber}&batch=${batch}`);
     return response.data;
 };
 

@@ -104,8 +104,7 @@ const ProjectForm = () => {
         await createProject(projectPayload);
       }
       
-      // Change this to match your actual route structure
-      navigate('/faculty'); // or '/faculty/dashboard'
+      navigate('/faculty/projects');
     } catch (err) {
       setError(`Failed to ${isEditMode ? 'update' : 'create'} project`);
       console.error(err);

@@ -70,7 +70,7 @@ const Navbar: React.FC = () => {
             // },
             { to: "/faculty/applications", text: "Applications", icon: FileSpreadsheet }
             ,
-            { to: "/faculty/project/create", text: "Manage Projects", icon: FolderGit2 }
+            { to: "/faculty/projects", text: "Manage Projects", icon: FolderGit2 }
         ],
         student: [
             { to: "/projects", text: "Projects", icon: FolderGit2 },

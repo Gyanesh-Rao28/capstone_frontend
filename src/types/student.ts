@@ -3,6 +3,6 @@
 export interface Student {
     id: string;
     userId: string;
-    studentId: string;
+    rollNumber: string;
     batch: string | null;
 }

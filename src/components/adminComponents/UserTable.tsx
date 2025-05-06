@@ -94,7 +94,7 @@ const UserTable = ({
                                         </div>
                                     ) : user.role === UserRole.student && user.student ? (
                                         <div>
-                                            <p>Student ID: {user.student.studentId}</p>
+                                                <p>Roll Number: {user.student.rollNumber}</p>
                                             <p>Batch: {user.student.batch || 'N/A'}</p>
                                         </div>
                                     ) : user.role === UserRole.admin && user.admin ? (

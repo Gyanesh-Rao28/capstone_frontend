@@ -6,7 +6,6 @@ const Loading = () => {
         alt="Loading"
         className="w-48 h-24"
       />
-      <div className="mt-4 text-gray-600">Loading...</div>
     </div>
   );
 }

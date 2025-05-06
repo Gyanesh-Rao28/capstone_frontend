@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
     Users, Calendar, ArrowLeft,
     Tag, Award, CheckCircle, XCircle, Clock, Calendar as CalendarIcon,
-    UserMinus, AlertCircle, LogOut
+    UserMinus, AlertCircle, LogOut, FileText
 } from 'lucide-react';
 import Loading from '../../components/Loading';
 import { getApplicationById, removeMember, leaveGroup } from '../../services/studentApi';
@@ -240,6 +240,11 @@ const ApplicationById = () => {
         }
     };
 
+    // Handle navigation to assessments
+    const handleNavigateToAssessments = () => {
+        navigate('/assessments');
+    };
+
     if (loading) {
         return <Loading />;
     }
@@ -260,6 +265,8 @@ const ApplicationById = () => {
 
     const statusInfo = getStatusInfo(application.applicationStatus);
     const daysRemaining = getDaysRemaining(application.project.deadline);
+    const isApproved = application.applicationStatus === 'Approved';
+    const showSubmissionButton = isApproved && isLeader;
 
     return (
         <div className="w-full max-w-7xl mx-auto p-4 overflow-y-auto max-h-screen">
@@ -290,7 +297,18 @@ const ApplicationById = () => {
                         </button>
                     )}
 
-                    <div className={`${!isMember || isLeader ? 'ml-auto' : ''} px-3 py-1 rounded-full text-sm font-medium flex items-center space-x-1 ${statusInfo.color}`}>
+                    {/* Submission Button - Only for approved projects and leaders */}
+                    {showSubmissionButton && (
+                        <button
+                            onClick={handleNavigateToAssessments}
+                            className="ml-auto mr-3 px-3 py-1 bg-blue-600 text-white hover:bg-blue-700 rounded-md text-sm font-medium flex items-center"
+                        >
+                            <FileText className="h-4 w-4 mr-1" />
+                            Manage Submissions
+                        </button>
+                    )}
+
+                    <div className={`${(!isMember || (isLeader && !isApproved)) ? 'ml-auto' : ''} px-3 py-1 rounded-full text-sm font-medium flex items-center space-x-1 ${statusInfo.color}`}>
                         {statusInfo.icon}
                         <span>{statusInfo.text}</span>
                     </div>
